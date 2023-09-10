@@ -83,8 +83,6 @@ function seconClick() {
       <td>${completed}</td>
       <td>${year}-${month + 1}-${day}</td>
     </tr>`;
-
-  // Now, add the click event listener after creating the rows
   var trClick = document.getElementsByClassName("linemission");
   for (var i = 0; i < trClick.length; i++) {
     trClick[i].addEventListener("click", function () {
