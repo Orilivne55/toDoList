@@ -3,17 +3,24 @@ var year = newDate.getFullYear();
 var month = newDate.getMonth();
 var day = newDate.getDate();
 var mainDiv = document.getElementById("mainDiv");
+var body = document.getElementById("body");
+var userName = {
+  missionName: [],
+  deatilsMission: [],
+  endDate: [],
+  completed: [],
+};
+var counter = 0;
+
 function onLoadPage() {
-  mainDiv.innerHTML += `<form>
+  mainDiv.innerHTML += `<form id="userForm">
     <label>enter first name:</label>
     <input type="text" id="fNameInput">
-    <label>enter date birth</label>
+    <label>enter date of birth:</label>
     <input type="date" id="dateInput">
-    <button type="submit" onclick="printName()">submit</button>
-    </form>
-    `;
+    <button type="button" onclick="printName()">submit</button>
+  </form>`;
 
-  var body = document.getElementById("body");
   if (month > 6) {
     body.style.backgroundColor = "green";
   }
@@ -21,47 +28,69 @@ function onLoadPage() {
 
 function printName() {
   var firstName = document.getElementById("fNameInput").value;
-  mainDiv.innerHTML += `<h1>welcome home ${firstName}! </h1>
+  mainDiv.innerHTML += `<h1>Welcome home ${firstName}!</h1>
      <form class="secondForm">
      <label>enter mission headline</label><br>
      <input type="text" id="headlineInput" class="secondForm"><br>
      <label>details for the mission</label><br>
      <input type="text" id="deatilsInput" class="secondForm"><br>
      <label>enter finish date</label><br>
-     <input type="text" id="finishDateInput" class="secondForm"><br>
+     <input type="date" id="finishDateInput" class="secondForm"><br>
      <label>enter if mission completed</label><br>
      <input type="text" id="completedInput" class="secondForm"><br>
-     <button type="button" id="secondFormBtn" class="secondForm">submit</button>
+     <button type="button" onclick="seconClick()">submit</button>
      </form>
-     <br>
-     `;
+     <br>`;
+}
 
-  var currentDate = `${year}-${month + 1}-${day}`;
-  function seconClick() {
-    var headlineInput = document.getElementById("headlineInput").value;
-    var deatilsInput = document.getElementById("deatilsInput").value;
-    var finishDateInput = document.getElementById("finishDateInput").value;
-    var completedInput = document.getElementById("completedInput").value;
+function seconClick() {
+  var headline = document.getElementById("headlineInput").value;
+  var details = document.getElementById("deatilsInput").value;
+  var endDate = document.getElementById("finishDateInput").value;
+  var completed = document.getElementById("completedInput").value;
+
+  userName.missionName.push(headline);
+  userName.deatilsMission.push(details);
+  userName.endDate.push(endDate);
+  userName.completed.push(completed);
+
+  var table = document.getElementById("customTable");
+  var tbody;
+
+  if (!table) {
     mainDiv.innerHTML += `
-        <table id="customTable">
-        <thead><th>headline for mission</th><th>details for the mission</th><th>finish date</th><th>mission completed?</th><th>current date</th></thead>
-        <tbody>
-            <tr id="trClick" onclick="clickOnRow()"><td>${headlineInput}</td><td>${deatilsInput}</td><td>${finishDateInput}</td><td>${completedInput}</td><td>${currentDate}</td></tr>
+      <table id="customTable">
+        <thead>
+          <th>Headline for Mission</th>
+          <th>Details for the Mission</th>
+          <th>Finish Date</th>
+          <th>Mission Completed?</th>
+          <th>Current Date</th>
+        </thead>
+        <tbody id="line">
         </tbody>
-    </table>
-        `;
-    console.log(headlineInput, deatilsInput, finishDateInput, completedInput);
+      </table>`;
+    tbody = document.getElementById("line");
+  } else {
+    tbody = table.querySelector("tbody");
   }
-  var secondFormBtn = document.getElementById("secondFormBtn");
-  secondFormBtn.addEventListener("click", seconClick);
-  var customTable = document.getElementById("customTable");
-  if (completedInput == "no") {
-    console.log("no");
-    customTable.style.color = "red";
+
+  tbody.innerHTML += `
+    <tr class="linemission">
+      <td>${headline}</td>
+      <td>${details}</td>
+      <td>${endDate}</td>
+      <td>${completed}</td>
+      <td>${year}-${month + 1}-${day}</td>
+    </tr>`;
+
+  // Now, add the click event listener after creating the rows
+  var trClick = document.getElementsByClassName("linemission");
+  for (var i = 0; i < trClick.length; i++) {
+    trClick[i].addEventListener("click", function () {
+      this.style.display = "none";
+    });
   }
 }
 
-function clickOnRow() {
-  var trClick = document.getElementById("trClick");
-  trClick.style.display = "none";
-}
+onLoadPage();
