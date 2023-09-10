@@ -69,20 +69,26 @@ function seconClick() {
         </thead>
         <tbody id="line">
         </tbody>
-    </table>
-        `;
-    console.log(headlineInput, deatilsInput, finishDateInput, completedInput);
+      </table>`;
+    tbody = document.getElementById("line");
+  } else {
+    tbody = table.querySelector("tbody");
   }
-  var secondFormBtn = document.getElementById("secondFormBtn");
-  secondFormBtn.addEventListener("click", seconClick);
-  var customTable = document.getElementById("customTable");
-  if (completedInput == "no") {
-    console.log("no");
-    customTable.style.color = "red";
-  }
-}
 
-function clickOnRow() {
-  var trClick = document.getElementById("trClick");
-  trClick.style.display = "none";
+  tbody.innerHTML += `
+    <tr class="linemission">
+      <td>${headline}</td>
+      <td>${details}</td>
+      <td>${endDate}</td>
+      <td>${completed}</td>
+      <td>${year}-${month + 1}-${day}</td>
+    </tr>`;
+
+  var trClick = document.getElementsByClassName("linemission");
+  for (var i = 0; i < trClick.length; i++) {
+    trClick[i].addEventListener("click", function () {
+      this.style.display = "none";
+    });
+  }
 }
+onLoadPage();
